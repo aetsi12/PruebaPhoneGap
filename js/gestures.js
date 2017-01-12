@@ -22,8 +22,28 @@ var app={
         hammertime.get('pinch').set({enable:true});
         hammertime.get('rotate').set({enable:true});
 
-        hammertime.on('tap doubletap pan swipe press pinch rotate', function(ev){
-            document.querySelector('#info').innerHTML = ev.type+'!';
+        zona.addEventListener('webkitAnimationEnd', function(e){
+            zona.className='';
+        });
+
+        hammertime.on('doubletap', function(event){
+            zona.className = 'doubletap';
+        });
+
+        hammertime.on('press', function(event){
+            zona.className = 'press';
+        });
+
+        hammertime.on('swipe', function(event){
+            var clase = undefined;
+            if(event.direction===4) clase='swipe-derecha';
+            if(event.direction===2) clase='swipe-izquierda';
+            zona.className=clase;
+        });
+
+        hammertime.on('rotate', function(event){
+            var umbral=25;
+            if(event.distance>umbral) zona.className = 'rotate';
         });
     },
 
