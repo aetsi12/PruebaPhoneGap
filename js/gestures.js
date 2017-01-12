@@ -26,6 +26,10 @@ var app={
             zona.className='';
         });
 
+        hammertime.on('tap', function(event){
+            zona.className = 'tap';
+        });
+
         hammertime.on('doubletap', function(event){
             zona.className = 'doubletap';
         });
