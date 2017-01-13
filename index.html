@@ -3,18 +3,27 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/gestures.css">
+        <link rel="stylesheet" type="text/css" href="css/camera.css">
         <title>GESTOS</title>
     </head>
     <body>
-        <button id="claro">CLARO</button>
-        <button id="oscuro">OSCURO</button>
-        <div id="zona-gestos"></div>
+        <header>
+            <img align="left" src="img/camera.png">
+            <span>Mi Cámara con Filtros</span>
+        </header>
+
+        <img src="" id="foto">
+
+        <div class="button-container">
+            <button id="button-action" class="button">Tomar Foto</button>
+        </div>
+
+        <footer>
+            Me pica el dedo gordo del pie.
+        </footer>
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/fastclick.js"></script>
-        <script type="text/javascript" src="js/hammer.min.js"></script>
-        <script type="text/javascript" src="js/gestures.js"></script>
-
+        <script type="text/javascript" src="js/camera.js"></script>
     </body>
 </html>
