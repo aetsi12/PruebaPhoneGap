@@ -1,33 +1,96 @@
 var app = {
     inicio: function(){
-        function onError(){
-            console.log('ERROR!');
+        DIAMETRO_BOLA = 50;
+
+        velocidadX = 0;
+        velocidadY = 0;
+        score = 0;
+
+        alto = document.documentElement.clientHeight;
+        ancho = document.documentElement.clientWidth;
+        app.vigilaSensores();
+        app.iniciaJuego();
+    },
+    iniciaJuego: function(){
+        function preload(){
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+
+            game.stage.backgroundColor = '#f27d0c';
+            game.load.image('bola', 'img/bola.png');
+            game.load.image('objetivo', 'img/objetivo.png');
         }
-        navigator.accelerometer.watchAcceleration(this.onSuccess, onError,{frequency:1000});
+
+        function create(){
+            scoreText = game.add.text(16,16, score, {fontSize: '100px', fill: '#757676'});
+
+            objetivo = game.add.sprite(app.inicioX(), app.inicioY(), 'objetivo');
+            bola = game.add.sprite(app.inicioX(), app.inicioY(), 'bola');
+
+            game.physics.arcade.enable(objetivo);
+            game.physics.arcade.enable(bola);
+
+            bola.body.collideWorldBounds = true;
+            bola.body.onWorldBounds = new Phaser.Signal();
+            bola.body.onWorldBounds.add(app.decrementaPuntuacion, this);
+        }
+
+        function update(){
+            bola.body.velocity.y = (velocidadY * 300);
+            bola.body.velocity.x = (velocidadX * -300);
+
+            game.physics.arcade.overlap(bola, objetivo, app.incrementaPuntuacion, null, this);
+        }
+
+        var estados = {preload: preload, create: create, update: update};
+        var game = new Phaser.Game(ancho, alto, Phaser.CANVAS, 'phaser', estados);
     },
 
-    onSuccess: function(data){
-        app.detectaAgitacion(data);
-        app.representa(data.x, '#valorx');
-        app.representa(data.y, '#valory');
-        app.representa(data.z, '#valorz');
+    decrementaPuntuacion: function(){
+        score -= 1;
+        scoreText.text = score;
+    },
+
+    incrementaPuntuacion: function(){
+        score += 1;
+        scoreText.text = score;
+    },
+
+    inicioX: function(){
+        return app.numeroAleatorioHasta(ancho - DIAMETRO_BOLA);
+    },
+    inicioY: function(){
+        return app.numeroAleatorioHasta(alto - DIAMETRO_BOLA);
+    },
+    numeroAleatorioHasta: function(limite){
+        return Math.floor(Math.random()*limite);
+    },
+    vigilaSensores: function(){
+        function onError(){
+            console.log("ERROR");
+        }
+
+        function onSuccess(data){
+            app.detectaAgitacion(data);
+            app.registraDireccion(data);
+        }
+
+        navigator.accelerometer.watchAcceleration(onSuccess, onError,{ frequency: 10 });
     },
     detectaAgitacion: function(data){
-        agitacionX = data.x > 10;
-        agitacionY = data.y > 10;
         if(data.x > 10 || data.y > 10)
-            document.body.className = 'agitado';
-        else
-            document.body.className = '';
+            setTimeout(app.recomienza, 1000);
     },
-    representa: function(data, htmlElement)  {
-        data = Math.round(data * 100) / 100;
-        document.querySelector(htmlElement).innerHTML = data;
+    recomienza: function(){
+        document.location.reload(true);
+    },
+    registraDireccion: function(data){
+        velocidadX = data.x;
+        velocidadY = data.y;
     }
 };
 
 if('addEventListener' in document){
-    document.addEventListener('deviceready', function(){
+    document.addEventListener('deviceready',function(){
         app.inicio();
     }, false);
 }
