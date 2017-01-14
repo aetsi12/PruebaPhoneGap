@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/notes.css">
+        <title>NOTAS</title>
+    </head>
+    <body>
+        <header>
+            <h1>Aplicacion de notas</h1>
+        </header>
+
+        <div class="notes-list-container">
+            <div class="notes-list" id="notes-list">
+                <div class="note-item">Comprar pan</div>
+                <div class="note-item">Revisión coche</div>
+            </div>
+            <button class="add" id="add">Añadir</button>
+        </div>
+
+        <div class="note-editor" id="note-editor">
+            <input class="titulo" type="text" name="titulo" id="titulo" placeholder="Título" required>
+            <br>
+            <textarea class="comentario" name="comentario" id="comentario" placeholder="Añadir comentario"></textarea>
+            <br>
+            <button class="guardar" id="guardar">Guardar</button>
+        </div>
+
+        <footer>
+            <h4>Mr. Pepe dice popadas.</h4>
+        </footer>
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/fastclick.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
+        <script type="text/javascript" src="js/notes.js"></script>
+    </body>
+</html>
