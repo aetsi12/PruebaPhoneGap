@@ -2,6 +2,7 @@ var app = {
     inicio: function(){
         DIAMETRO_BOLA = 50;
 
+        dificultad = 0;
         velocidadX = 0;
         velocidadY = 0;
         score = 0;
@@ -30,13 +31,14 @@ var app = {
             game.physics.arcade.enable(bola);
 
             bola.body.collideWorldBounds = true;
-            bola.body.onWorldBounds = new Phaser.Signal();
-            bola.body.onWorldBounds.add(app.decrementaPuntuacion, this);
+            //bola.body.onWorldBounds = new Phaser.Signal();
+            //bola.body.onWorldBounds.add(app.decrementaPuntuacion, this);
         }
 
         function update(){
-            bola.body.velocity.y = (velocidadY * 300);
-            bola.body.velocity.x = (velocidadX * -300);
+            var factorDificultad = (300 + (dificultad*100)); //Cuanta más dificultad más velocidad
+            bola.body.velocity.y = (velocidadY * factorDificultad);
+            bola.body.velocity.x = (velocidadX * (-1 * factorDificultad));
 
             game.physics.arcade.overlap(bola, objetivo, app.incrementaPuntuacion, null, this);
         }
@@ -53,6 +55,11 @@ var app = {
     incrementaPuntuacion: function(){
         score += 1;
         scoreText.text = score;
+
+        objetivo.body.x = app.inicioX();
+        objetivo.body.y = app.inicioY();
+
+        dificultad+=1;
     },
 
     inicioX: function(){
